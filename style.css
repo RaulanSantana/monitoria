@@ -1,0 +1,208 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'OpenSans2';
+    src: url('fonts/OpenSans2.ttf') format(truetype);
+}
+
+body {
+    background-color: #F4F4F6;
+}
+
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 8px;
+    height: 622px;
+    width: 310px;
+    color: #0577be;
+    box-shadow: 0px 1px 5px 0px #46465518;
+    font-family: 'Opensans';
+    font-size: 17px;
+    text-align: center;
+}
+
+.inputBox {
+    left: -50%;
+    position: relative;
+}
+
+.textH {
+    padding: 10px;
+    background-color: #F4F4F6;
+}
+
+.inputUser {
+    font-family: 'OpenSans2';
+    background-color: #E8F0FE;
+    outline: none;
+    border-bottom: 1px solid rgb(25, 2, 2);
+    border: none;
+    border-radius: 1px;
+    color: #0577be;
+    width: 100%;
+    position: absolute;
+    height: 50px;
+    text-align: center;
+    text-align: left;
+    text-indent: 20px;
+}
+
+.Logo {
+    padding: 10px 10px 0px 10px;
+    position: relative;
+}
+
+.ini {
+    margin: 0px 0px 25px 0px;
+    font-size: 17px;
+    color: #02446d;
+}
+
+.labelInput {
+    font-size: 14px;
+    width: 100%;
+    margin-top: 15px;
+    text-align: left;
+    text-indent: 20px;
+    pointer-events: none;
+    position: absolute;
+}
+
+.inputUser:focus ~ .labelInput,
+.inputUser:valid ~ .labelInput {
+    display: none;
+}
+
+#SM {
+    background-color: #093855;
+    padding: 12px;
+    color: black;
+    position: absolute;
+    width: 89.5%;
+    left: 6%;
+    bottom: 32%;
+    border: none;
+    border-radius: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.512);
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    box-shadow: 0px 1px 0px 0px #0d0c2cfa;
+    cursor: pointer;
+}
+
+#c1 {
+    background-color: #10669A;
+    padding: 12px;
+    color: black;
+    position: absolute;
+    width: 89.5%;
+    left: 6%;
+    bottom: 14%;
+    border: none;
+    border-radius: 2px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.512);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0px 1px 0px 0px #0d0c2cfa;
+    cursor: pointer;
+
+  
+}
+
+.nc {
+    font-size: 13px;
+}
+
+.nc:hover {
+    text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+}
+
+#CC {
+    background-color: #10669A;
+    padding: 12px;
+    color: black;
+    position: absolute;
+    width: 89.5%;
+    left: 6%;
+    bottom: 14%;
+    border: none;
+    border-radius: 2px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.512);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0px 1px 0px 0px #0d0c2cfa;
+    cursor: pointer;
+}
+
+#ANCORA {
+    background-color: #10669A;
+    padding: 12px;
+    color: black;
+    position: absolute;
+    width: 83.1%;
+    left: 6%;
+    bottom: 14%;
+    border: none;
+    border-radius: 2px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.512);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0px 1px 0px 0px #0d0c2cfa;
+    cursor: pointer;
+
+    
+}
+
+.container_h {
+    background-color: #093855;
+    padding: 20px;
+}
+
+.navegador {
+    padding: 10px;
+    margin-top: 5px;
+}
+
+li {
+    font-size: 20px;
+    padding: 15px;
+}
+
+.spn {
+    color: red;
+}
+
+.spn1 {
+    color: green;
+}
+
+.topo {
+    background-color: #093855; /* Cor da faixa de fundo */
+    color: #ffffff; /* Cor do texto */
+    text-align: right;
+    padding: 10px;
+}
+
+.topo h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+
+
+
+
+
