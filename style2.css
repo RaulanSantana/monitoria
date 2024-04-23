@@ -179,12 +179,377 @@
     color: green;
   }
 
-  .test{
+  .monitoriacadastrada{
     background-color: #F4F4F6;
-    font-size: 20px;
+    font-size: 17px;
     text-align: left;
     margin-top: 20px;
     margin-left: 27px;
-    width: 30%;
+    width: 23%;
+    text-transform: capitalize;
+    font-family: 'OpenSans2' ;
+    
+    
   }
+  #legendTitulo {
+    font-weight: bolder;
+  }
+
   
+
+
+
+
+
+  /* Estilo da tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'OpenSans2' ;
+    font-size: 14px;
+    
+}
+
+
+/* Estilo das células da tabela */
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    text-transform: capitalize;
+    
+}
+
+/* Estilo do cabeçalho da tabela */
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Estilo das linhas alternadas da tabela */
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Estilo das bordas entre as colunas */
+.table th:not(:last-child),
+.table td:not(:last-child) {
+    border-right: 10px solid #ddd;
+}
+
+/* Estilo do rodapé da tabela */
+.table tfoot {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.user-avatar {
+    width: 50px; /* Tamanho do círculo */
+    height: 50px; /* Tamanho do círculo */
+    border-radius: 50%; /* Transforma o quadrado em um círculo */
+    background-color: #ccc; /* Cor de fundo padrão */
+    background-image: url('caminho_para_sua_imagem/avatar.jpg'); /* Caminho para a imagem do usuário */
+    background-size: cover; /* Garante que a imagem cubra todo o círculo */
+    background-position: center; 
+    margin-right: 10px; 
+    float: right; 
+    left: -6px;
+    position: relative;
+}
+
+
+.perfilStatus {
+    background-color:#ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.perfilStatus fieldset {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.perfilStatus legend {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.perfilStatus label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.perfilStatus input[type="text"],
+.perfilStatus input[type="file"],
+.perfilStatus textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.perfilStatus textarea {
+    resize: none;
+}
+
+.perfilStatus input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.perfilStatus input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.preview {
+    display: none;
+}
+
+
+/* Estilo para a prévia da imagem */
+#preview-container {
+    display: none; /* Por padrão, a prévia é ocultada */
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Garante que a prévia seja um círculo */
+    overflow: hidden; /* Evita que a imagem ultrapasse os limites do círculo */
+    position: absolute; /* Posicionamento absoluto para permitir ajustes */
+    top: 30px; /* Ajuste vertical */
+    right: 20px; /* Ajuste horizontal */
+    z-index: 1; /* Garante que a prévia fique sobreposta ao restante do conteúdo */
+}
+
+#preview-img {
+    width: 100%; /* Ajusta a largura da imagem para preencher o contêiner */
+    height: 100%; /* Ajusta a altura da imagem para preencher o contêiner */
+    object-fit: cover; /* Garante que a imagem cubra todo o contêiner */
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ajuste conforme necessário */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: unset;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #f5f0f0;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    max-width: 800px; /* Ajuste conforme necessário */
+    font-family: 'OpenSans2' ;
+    font-weight: bolder;
+    color: #010203;
+    font-size: 13px;
+}
+
+
+.modaldel {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ajuste conforme necessário */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: unset;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modaldel-content {
+    background-color: #f5f0f0;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    max-width: 800px; /* Ajuste conforme necessário */
+    font-family: 'OpenSans2' ;
+    font-weight: bolder;
+    color: #010203;
+    font-size: 13px;
+}
+
+
+
+
+.close {
+    position: relative;
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    top: -20px;
+    left: 5px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tituloModel{
+    background-color: #E6E6EB;
+    color: #093855;
+    margin-top: -20px;
+    margin-left: -20px;
+    width: 102.5%;
+    padding: 10px;
+    top: 1px;
+    left: 1px;
+}
+
+
+.botaoCriar{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+   
+}
+.botaoCriar input{
+
+    padding: 5px;
+    background-color: green;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-color: #000000;
+    font-weight: bold;
+    border-radius: 6%;
+    color: white;
+    
+}
+
+.botaoCriar input:hover{
+    background-color: rgb(109, 163, 27);
+}
+
+.criarMon{
+    margin-top: 45px;
+    margin-bottom: -65px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+.cursoM{
+    position: relative;
+    top: 3px;
+
+}
+.disciplinaM{
+    position: relative;
+    top: -30px;
+    right: -562px;
+}
+.faseM{
+    position: relative;
+    top: -68px;
+    right: -294px
+}
+
+.salaM{
+    position: relative;
+    top: 51px;
+    
+}
+.turnoM{
+    position: relative;
+    top: -95px;
+}
+
+.inicioM{
+    position: relative;
+    top: -132px;
+    right: -268px;
+}
+
+.fimM{
+    position: relative;
+    top: -189px;
+    right: -415px;
+}
+
+.dia_aulaM{
+    position: relative;
+    top: -245px;
+    right: -562px;
+}
+
+.botaoM{
+    position: relative;
+    top: -26px;
+    right: 0px;
+}
+.botaoM input{
+
+   
+    background-color: green;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-color: #000000;
+    font-weight: bold;
+    border-radius: 6%;
+    color: white;
+    width: 17%;
+    
+}
+
+.botaoM input:hover{
+    background-color: rgb(109, 163, 27);
+}
+
+.botaoCM{
+    position: relative;
+    top: -65px;
+    right: -676px;
+}
+.botaoCM button{
+
+   
+    background-color: rgb(197, 59, 59);
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-color: #000000;
+    font-weight: bold;
+    border-radius: 6%;
+    color: white;
+    
+}
+
+.botaoCM button:hover{
+    background-color: red;
+}
+
+label {
+    cursor: pointer; /* Torna o label clicável */
+    padding: 5px; /* Adiciona preenchimento para uma área maior */
+}
+
+select {
+    width: 220px; /* Define a largura fixa para as caixas de seleção */
+    padding: 2px; /* Adiciona preenchimento para melhor aparência */
+    box-sizing: border-box; /* Garante que o preenchimento seja incluído no tamanho */
+}

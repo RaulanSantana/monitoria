@@ -38,12 +38,12 @@ if(isset($_POST['submit'])){
             // Recupera o ID da pessoa recém-cadastrada
             $id_pessoa = mysqli_insert_id($conexao);
         
-            // Inserção na tabela professor
-            $query_professor = "INSERT INTO monitor(monitor_pessoa) VALUES ('$id_pessoa')";
+            // Inserção na tabela professor ou monitor aqui tenho que alterar o codigo.
+            $query_usuario = "INSERT INTO monitor(monitor_pessoa) VALUES ('$id_pessoa')";
 
-          //  $query_professor = "INSERT INTO professor(professor_pessoa) VALUES ('$id_pessoa')";
+          //$query_professor = "INSERT INTO professor(professor_pessoa) VALUES ('$id_pessoa')";
             
-            if (mysqli_query($conexao, $query_professor)) {
+            if (mysqli_query($conexao, $query_usuario)) {
                 $mensagem1 = "Cadastro realizado com sucesso.";
             } else {
                 $mensagem = "Erro inesperado.";

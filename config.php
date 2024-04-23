@@ -7,12 +7,13 @@ $banco = 'monitoriateste';
 
 
 
+
 $conexao = new mysqli($host,$username,$senha,$banco);
 //if($conexao->connect_errno)
 //{
- //   echo "erro";
+  //  echo "erro";
 //}
-////else{
-//    echo "CADASTRADO!";
+//else{
+   // echo "funcionando";
 //}
 ?>

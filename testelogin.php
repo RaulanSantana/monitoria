@@ -49,7 +49,10 @@ if (isset($_POST['submit']) && isset($_POST['email']) && isset($_POST['senha']))
                 $_SESSION['nome_pessoa'] = $nome_pessoa; // Armazena o nome do professor
                 $_SESSION['matricula'] = $matricula; // Armazena a matrícula do professor
                 $_SESSION['id_pessoa'] = $id_pessoa;
-
+                
+                // Armazena o ID do professor
+                $row_professor = mysqli_fetch_assoc($result_professor);
+                $_SESSION['id_professor'] = $row_professor['id_professor'];
 
                 // Redirecionar para a página de perfil do professor
                 header("Location: inicioprofessor.php");
@@ -59,6 +62,10 @@ if (isset($_POST['submit']) && isset($_POST['email']) && isset($_POST['senha']))
                 $_SESSION['nome_pessoa'] = $nome_pessoa; // Armazena o nome do monitor
                 $_SESSION['matricula'] = $matricula; // Armazena a matrícula do monitor
                 $_SESSION['id_pessoa'] = $id_pessoa;
+                
+                // Armazena o ID do monitor
+                $row_monitor = mysqli_fetch_assoc($result_monitor);
+                $_SESSION['id_monitor'] = $row_monitor['id_monitor'];
 
                 // Redirecionar para a página de perfil do monitor
                 header("Location: iniciomonitor.php");
