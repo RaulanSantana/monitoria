@@ -1,0 +1,263 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema monitoriateste
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema monitoriateste
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `monitoriateste` DEFAULT CHARACTER SET utf8mb4 ;
+USE `monitoriateste` ;
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`pessoa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`pessoa` (
+  `id_pessoa` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome_pessoa` VARCHAR(150) NOT NULL,
+  `matricula` INT(20) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `senha` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_pessoa`),
+  UNIQUE INDEX `matricula_un` (`matricula` ASC) VISIBLE,
+  UNIQUE INDEX `email_un` (`email` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 39
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`monitor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`monitor` (
+  `id_monitor` INT(11) NOT NULL AUTO_INCREMENT,
+  `monitor_pessoa` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_monitor`),
+  INDEX `monitor_FK` (`monitor_pessoa` ASC) VISIBLE,
+  CONSTRAINT `monitor_FK`
+    FOREIGN KEY (`monitor_pessoa`)
+    REFERENCES `monitoriateste`.`pessoa` (`id_pessoa`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`professor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`professor` (
+  `id_professor` INT(11) NOT NULL AUTO_INCREMENT,
+  `professor_pessoa` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_professor`),
+  INDEX `professor_FK` (`professor_pessoa` ASC) VISIBLE,
+  CONSTRAINT `professor_FK`
+    FOREIGN KEY (`professor_pessoa`)
+    REFERENCES `monitoriateste`.`pessoa` (`id_pessoa`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 26
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`curso`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`curso` (
+  `id_curso` INT(11) NOT NULL AUTO_INCREMENT,
+  `curso_nome` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_curso`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 47
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`disciplina`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`disciplina` (
+  `id_disciplina` INT(11) NOT NULL AUTO_INCREMENT,
+  `disciplina_nome` VARCHAR(100) NULL DEFAULT NULL,
+  `disciplina_fase` INT(11) NULL DEFAULT NULL,
+  `disciplina_professor` INT(11) NULL DEFAULT NULL,
+  `disciplina_curso` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_disciplina`),
+  INDEX `disciplina_FK` (`disciplina_professor` ASC) VISIBLE,
+  INDEX `disciplina_FK_1` (`disciplina_curso` ASC) VISIBLE,
+  CONSTRAINT `disciplina_FK`
+    FOREIGN KEY (`disciplina_professor`)
+    REFERENCES `monitoriateste`.`professor` (`id_professor`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `disciplina_FK_1`
+    FOREIGN KEY (`disciplina_curso`)
+    REFERENCES `monitoriateste`.`curso` (`id_curso`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 210
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`dias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`dias` (
+  `id_dias` INT(11) NOT NULL AUTO_INCREMENT,
+  `dia` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`id_dias`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`monitoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`monitoria` (
+  `id_monitoria` INT(11) NOT NULL AUTO_INCREMENT,
+  `monitoria_disciplina` INT(11) NOT NULL,
+  `turno` VARCHAR(100) NOT NULL,
+  `monitoria_monitor` INT(11) NULL DEFAULT NULL,
+  `local` VARCHAR(100) NULL DEFAULT NULL,
+  `monitoria_dia` INT(11) NOT NULL,
+  `data_inicio` DATE NULL DEFAULT NULL,
+  `data_fim` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`id_monitoria`),
+  INDEX `monitoria_FK` (`monitoria_monitor` ASC) VISIBLE,
+  INDEX `monitoria_FK_1` (`monitoria_disciplina` ASC) VISIBLE,
+  INDEX `monitoria_FK_2` (`monitoria_dia` ASC) VISIBLE,
+  CONSTRAINT `monitoria_FK`
+    FOREIGN KEY (`monitoria_monitor`)
+    REFERENCES `monitoriateste`.`monitor` (`id_monitor`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `monitoria_FK_1`
+    FOREIGN KEY (`monitoria_disciplina`)
+    REFERENCES `monitoriateste`.`disciplina` (`id_disciplina`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `monitoria_FK_2`
+    FOREIGN KEY (`monitoria_dia`)
+    REFERENCES `monitoriateste`.`dias` (`id_dias`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 16
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`aula`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`aula` (
+  `id_aula` INT(11) NOT NULL AUTO_INCREMENT,
+  `presenca` TINYINT(1) NULL DEFAULT NULL,
+  `atividades` MEDIUMTEXT NULL DEFAULT NULL,
+  `aula_monitoria` INT(11) NOT NULL,
+  `aula_data` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`id_aula`),
+  INDEX `aula_FK` (`aula_monitoria` ASC) VISIBLE,
+  CONSTRAINT `aula_FK`
+    FOREIGN KEY (`aula_monitoria`)
+    REFERENCES `monitoriateste`.`monitoria` (`id_monitoria`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `monitoriateste`.`perfil`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`perfil` (
+  `id_perfil` INT(11) NOT NULL AUTO_INCREMENT,
+  `foto` VARCHAR(100) NULL DEFAULT NULL,
+  `sobre` VARCHAR(255) NULL DEFAULT NULL,
+  `contatos` VARCHAR(100) NULL DEFAULT NULL,
+  `perfil_pessoa` INT(11) NOT NULL,
+  PRIMARY KEY (`id_perfil`),
+  INDEX `perfil_FK` (`perfil_pessoa` ASC) VISIBLE,
+  CONSTRAINT `perfil_FK`
+    FOREIGN KEY (`perfil_pessoa`)
+    REFERENCES `monitoriateste`.`pessoa` (`id_pessoa`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+USE `monitoriateste` ;
+
+-- -----------------------------------------------------
+-- Placeholder table for view `monitoriateste`.`listar_monitoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`listar_monitoria` (`id_monitoria` INT, `disciplina` INT, `turno` INT, `monitoria_monitor` INT, `local` INT, `monitoria_dia` INT, `data_inicio` INT, `data_fim` INT, `disciplina_nome` INT, `disciplina_fase` INT, `curso_nome` INT, `nome_professor` INT, `nome_dia` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `monitoriateste`.`listar_monitoria_completa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`listar_monitoria_completa` (`id_monitoria` INT, `disciplina` INT, `turno` INT, `monitoria_monitor` INT, `local` INT, `monitoria_dia` INT, `data_inicio` INT, `data_fim` INT, `disciplina_nome` INT, `disciplina_fase` INT, `curso_nome` INT, `nome_pessoa` INT, `dia` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `monitoriateste`.`monitoria_view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`monitoria_view` (`id_monitoria` INT, `nome_disciplina` INT, `curso_nome` INT, `turno` INT, `disciplina_fase` INT, `nome_professor` INT, `nome_monitor` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `monitoriateste`.`v_monitorias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`v_monitorias` (`id` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `monitoriateste`.`v_monitorias_disponiveis`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `monitoriateste`.`v_monitorias_disponiveis` (`id` INT);
+
+-- -----------------------------------------------------
+-- View `monitoriateste`.`listar_monitoria`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `monitoriateste`.`listar_monitoria`;
+USE `monitoriateste`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monitoriateste`.`listar_monitoria` AS select `monitoriateste`.`monitoria`.`id_monitoria` AS `id_monitoria`,`monitoriateste`.`monitoria`.`disciplina` AS `disciplina`,`monitoriateste`.`monitoria`.`turno` AS `turno`,`monitoriateste`.`monitoria`.`monitoria_monitor` AS `monitoria_monitor`,`monitoriateste`.`monitoria`.`local` AS `local`,`monitoriateste`.`monitoria`.`monitoria_dia` AS `monitoria_dia`,`monitoriateste`.`monitoria`.`data_inicio` AS `data_inicio`,`monitoriateste`.`monitoria`.`data_fim` AS `data_fim`,`monitoriateste`.`disciplina`.`disciplina_nome` AS `disciplina_nome`,`monitoriateste`.`disciplina`.`disciplina_fase` AS `disciplina_fase`,`monitoriateste`.`curso`.`curso_nome` AS `curso_nome`,`monitoriateste`.`pessoa`.`nome_pessoa` AS `nome_professor`,`monitoriateste`.`dias`.`dia` AS `nome_dia` from (((((`monitoriateste`.`monitoria` join `monitoriateste`.`disciplina` on(`monitoriateste`.`monitoria`.`disciplina` = `monitoriateste`.`disciplina`.`id_disciplina`)) join `monitoriateste`.`curso` on(`monitoriateste`.`disciplina`.`disciplina_curso` = `monitoriateste`.`curso`.`id_curso`)) left join `monitoriateste`.`professor` on(`monitoriateste`.`disciplina`.`disciplina_professor` = `monitoriateste`.`professor`.`id_professor`)) left join `monitoriateste`.`pessoa` on(`monitoriateste`.`professor`.`professor_pessoa` = `monitoriateste`.`pessoa`.`id_pessoa`)) left join `monitoriateste`.`dias` on(`monitoriateste`.`monitoria`.`monitoria_dia` = `monitoriateste`.`dias`.`id_dias`)) where `monitoriateste`.`monitoria`.`monitoria_monitor` is null;
+
+-- -----------------------------------------------------
+-- View `monitoriateste`.`listar_monitoria_completa`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `monitoriateste`.`listar_monitoria_completa`;
+USE `monitoriateste`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monitoriateste`.`listar_monitoria_completa` AS select `monitoriateste`.`monitoria`.`id_monitoria` AS `id_monitoria`,`monitoriateste`.`monitoria`.`disciplina` AS `disciplina`,`monitoriateste`.`monitoria`.`turno` AS `turno`,`monitoriateste`.`monitoria`.`monitoria_monitor` AS `monitoria_monitor`,`monitoriateste`.`monitoria`.`local` AS `local`,`monitoriateste`.`monitoria`.`monitoria_dia` AS `monitoria_dia`,`monitoriateste`.`monitoria`.`data_inicio` AS `data_inicio`,`monitoriateste`.`monitoria`.`data_fim` AS `data_fim`,`monitoriateste`.`disciplina`.`disciplina_nome` AS `disciplina_nome`,`monitoriateste`.`disciplina`.`disciplina_fase` AS `disciplina_fase`,`monitoriateste`.`curso`.`curso_nome` AS `curso_nome`,`monitoriateste`.`pessoa`.`nome_pessoa` AS `nome_pessoa`,`monitoriateste`.`dias`.`dia` AS `dia` from (((((`monitoriateste`.`monitoria` join `monitoriateste`.`disciplina` on(`monitoriateste`.`monitoria`.`disciplina` = `monitoriateste`.`disciplina`.`id_disciplina`)) join `monitoriateste`.`curso` on(`monitoriateste`.`disciplina`.`disciplina_curso` = `monitoriateste`.`curso`.`id_curso`)) left join `monitoriateste`.`professor` on(`monitoriateste`.`disciplina`.`disciplina_professor` = `monitoriateste`.`professor`.`id_professor`)) left join `monitoriateste`.`pessoa` on(`monitoriateste`.`professor`.`professor_pessoa` = `monitoriateste`.`pessoa`.`id_pessoa`)) left join `monitoriateste`.`dias` on(`monitoriateste`.`monitoria`.`monitoria_dia` = `monitoriateste`.`dias`.`id_dias`)) where `monitoriateste`.`monitoria`.`monitoria_monitor` <> 0;
+
+-- -----------------------------------------------------
+-- View `monitoriateste`.`monitoria_view`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `monitoriateste`.`monitoria_view`;
+USE `monitoriateste`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monitoriateste`.`monitoria_view` AS select `monitoriateste`.`monitoria`.`id_monitoria` AS `id_monitoria`,`monitoriateste`.`disciplina`.`disciplina_nome` AS `nome_disciplina`,`monitoriateste`.`curso`.`curso_nome` AS `curso_nome`,`monitoriateste`.`monitoria`.`turno` AS `turno`,`monitoriateste`.`disciplina`.`disciplina_fase` AS `disciplina_fase`,`monitoriateste`.`pessoa`.`nome_pessoa` AS `nome_professor`,`pessoa_1`.`nome_pessoa` AS `nome_monitor` from ((((((`monitoriateste`.`monitoria` join `monitoriateste`.`disciplina` on(`monitoriateste`.`monitoria`.`disciplina` = `monitoriateste`.`disciplina`.`id_disciplina`)) join `monitoriateste`.`curso` on(`monitoriateste`.`disciplina`.`disciplina_curso` = `monitoriateste`.`curso`.`id_curso`)) left join `monitoriateste`.`professor` on(`monitoriateste`.`disciplina`.`disciplina_professor` = `monitoriateste`.`professor`.`id_professor`)) left join `monitoriateste`.`pessoa` on(`monitoriateste`.`professor`.`professor_pessoa` = `monitoriateste`.`pessoa`.`id_pessoa`)) left join `monitoriateste`.`monitor` on(`monitoriateste`.`monitoria`.`monitor` = `monitoriateste`.`monitor`.`id_monitor`)) left join `monitoriateste`.`pessoa` `pessoa_1` on(`monitoriateste`.`monitor`.`monitor_pessoa` = `pessoa_1`.`id_pessoa`));
+
+-- -----------------------------------------------------
+-- View `monitoriateste`.`v_monitorias`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `monitoriateste`.`v_monitorias`;
+USE `monitoriateste`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monitoriateste`.`v_monitorias` AS (select `monitoriateste`.`monitoria`.`monitoria_monitor` AS `monitoria_monitor`,`monitoriateste`.`monitor`.`monitor_pessoa` AS `monitor_pessoa`,`monitoriateste`.`pessoa`.`id_pessoa` AS `id_pessoa` from ((`monitoriateste`.`monitoria` join `monitoriateste`.`monitor`) join `monitoriateste`.`pessoa`) where `monitoriateste`.`monitoria`.`monitoria_monitor` = `monitoriateste`.`monitor`.`id_monitor` and `monitoriateste`.`monitor`.`monitor_pessoa` = `monitoriateste`.`pessoa`.`id_pessoa`);
+
+-- -----------------------------------------------------
+-- View `monitoriateste`.`v_monitorias_disponiveis`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `monitoriateste`.`v_monitorias_disponiveis`;
+USE `monitoriateste`;
+CREATE  OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monitoriateste`.`v_monitorias_disponiveis` AS (select `monitoriateste`.`monitoria`.`monitoria_monitor` AS `monitoria_monitor`,`monitoriateste`.`monitor`.`monitor_pessoa` AS `monitor_pessoa`,`monitoriateste`.`pessoa`.`nome_pessoa` AS `nome_pessoa` from ((`monitoriateste`.`monitoria` join `monitoriateste`.`monitor`) join `monitoriateste`.`pessoa`) where `monitoriateste`.`monitoria`.`monitoria_monitor` = `monitoriateste`.`monitor`.`id_monitor` and `monitoriateste`.`monitor`.`monitor_pessoa` = `monitoriateste`.`pessoa`.`id_pessoa`);
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
