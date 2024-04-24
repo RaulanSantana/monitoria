@@ -21,16 +21,25 @@ $id_professor = $_SESSION['id_professor'];
 
 
 
-$query = "SELECT monitoria.*, disciplina.disciplina_nome, disciplina.disciplina_fase, curso.curso_nome, pessoa.nome_pessoa, dias.dia
-FROM monitoria
-INNER JOIN disciplina ON monitoria.monitoria_disciplina = disciplina.id_disciplina
-INNER JOIN curso ON disciplina.disciplina_curso = curso.id_curso
-LEFT JOIN professor ON disciplina.disciplina_professor = professor.id_professor
-LEFT JOIN pessoa ON professor.professor_pessoa = pessoa.id_pessoa
-LEFT JOIN dias ON monitoria.monitoria_dia = dias.id_dias
-WHERE monitoria.monitoria_monitor = ?";
+$query = "SELECT
+monitoria.id_monitoria,
+curso.curso_nome,
+disciplina.disciplina_nome,
+nome_monitor.nome_pessoa as nome_monitor,
+monitoria.turno,
+monitoria.local,
+dias.dia,
+monitoria.data_inicio,
+monitoria.data_fim
+from monitoria
+inner join disciplina on monitoria.monitoria_disciplina = id_disciplina
+inner join curso on disciplina.disciplina_curso = id_curso
+INNER JOIN monitor ON monitoria.monitoria_monitor = monitor.id_monitor  
+inner join pessoa as nome_monitor on monitor.monitor_pessoa = nome_monitor.id_pessoa
+inner join dias on monitoria.monitoria_dia = dias.id_dias
+where disciplina.disciplina_professor = ?";
 $stmt = mysqli_prepare($conexao, $query);
-mysqli_stmt_bind_param($stmt, "i", $id_monitor);
+mysqli_stmt_bind_param($stmt, "i", $id_professor);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
@@ -96,7 +105,7 @@ mysqli_close($conexao);
             <?php foreach($monitorias as $monitoria): ?>
                 <p>Disciplina: <?php echo $monitoria['disciplina_nome']; ?></p>
                 <p>Curso: <?php echo $monitoria['curso_nome']; ?></p>
-                <p>Professor: <?php echo $monitoria['nome_pessoa']; ?></p>
+                <p>Monitor: <?php echo ucwords($monitoria['nome_monitor']); ?></p>
                 <p>Sala: <?php echo $monitoria['local']; ?></p>
                 <p>Turno: <?php echo $monitoria['turno']; ?></p>
                 <p>Dia: <?php echo $monitoria['dia']; ?></p>

@@ -186,7 +186,7 @@
     margin-top: 20px;
     margin-left: 27px;
     width: 23%;
-    text-transform: capitalize;
+   /* text-transform: capitalize;*/
     font-family: 'OpenSans2' ;
     
     
@@ -217,7 +217,7 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    text-transform: capitalize;
+    text-transform: capitalize; 
     
 }
 
@@ -241,7 +241,7 @@
 /* Estilo do rodapé da tabela */
 .table tfoot {
     font-weight: bold;
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .user-avatar {
@@ -459,13 +459,13 @@
 }
 .disciplinaM{
     position: relative;
-    top: -30px;
+    top: -76px;
     right: -562px;
 }
 .faseM{
     position: relative;
-    top: -68px;
-    right: -294px
+    top: -37px;
+    right: -280px;
 }
 
 .salaM{
@@ -498,8 +498,8 @@
 
 .botaoM{
     position: relative;
-    top: -26px;
-    right: 0px;
+    top: -60px;
+    right: -660px;
 }
 .botaoM input{
 
@@ -522,8 +522,8 @@
 
 .botaoCM{
     position: relative;
-    top: -65px;
-    right: -676px;
+    top: -24px;
+    right: 0px;
 }
 .botaoCM button{
 
@@ -552,4 +552,24 @@ select {
     width: 220px; /* Define a largura fixa para as caixas de seleção */
     padding: 2px; /* Adiciona preenchimento para melhor aparência */
     box-sizing: border-box; /* Garante que o preenchimento seja incluído no tamanho */
+}
+
+
+legend{
+    font-size: 18px;
+}
+
+.botaoAcessar input{
+    background-color: green;
+    color: white;
+    font-family: 'OpenSans2';
+    font-weight: bold;
+    border: yellowgreen;
+    width: 50%;
+    height: 50%;
+   
+}
+
+.botaoAcessar :hover{
+    background-color:  rgb(109, 163, 27);
 }

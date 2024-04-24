@@ -45,6 +45,85 @@ if(mysqli_num_rows($result) > 0) {
     }
 }
 
+// Função para mapear nomes dos dias para números (domingo a sábado)
+$daysOfWeek = [
+    'Domingo' => 0,
+    'Segunda-feira' => 1,
+    'Terça-feira' => 2,
+    'Quarta-feira' => 3,
+    'Quinta-feira' => 4,
+    'Sexta-feira' => 5,
+    'Sábado' => 6,
+];
+
+// Função para mapear nomes dos dias para números (domingo a sábado)
+$daysOfWeek = [
+    'Domingo' => 0,
+    'Segunda-feira' => 1,
+    'Terça-feira' => 2,
+    'Quarta-feira' => 3,
+    'Quinta-feira' => 4,
+    'Sexta-feira' => 5,
+    'Sábado' => 6,
+];
+
+// Converte para o formato esperado
+$currentDay = ucfirst(strtolower(date("l"))); // Converte o dia para o formato esperado
+
+// Mapeia o nome do dia para português
+switch ($currentDay) {
+    case "Sunday":
+        $currentDay = "Domingo";
+        break;
+    case "Monday":
+        $currentDay = "Segunda-feira";
+        break;
+    case "Tuesday":
+        $currentDay = "Terça-feira";
+        break;
+    case "Wednesday":
+        $currentDay = "Quarta-feira";
+        break;
+    case "Thursday":
+        $currentDay = "Quinta-feira";
+        break;
+    case "Friday":
+        $currentDay = "Sexta-feira";
+        break;
+    case "Saturday":
+        $currentDay = "Sábado";
+        break;
+}
+
+// Verifica se a chave existe antes de acessar
+if (!array_key_exists($currentDay, $daysOfWeek)) {
+    die("Erro: Dia da semana não reconhecido. Por favor, verifique a configuração do seu servidor.");
+}
+
+// Função para pegar o índice do dia da semana
+function getDayIndex($day) {
+    global $daysOfWeek; // Torna a variável acessível na função
+    return $daysOfWeek[$day];
+}
+
+// Organiza as monitorias para que as do dia atual fiquem no topo
+$today_monitorias = [];
+$other_monitorias = [];
+
+// Classifica as monitorias em hoje e outros dias
+foreach ($monitorias as $monitoria) {
+    if (getDayIndex($monitoria['dia']) === getDayIndex($currentDay)) {
+        $today_monitorias[] = $monitoria;
+    } else {
+        $other_monitorias[] = $monitoria;
+    }
+}
+
+// Combina listas para que as monitorias de hoje fiquem no topo
+$monitorias = array_merge($today_monitorias, $other_monitorias);
+
+
+
 // Feche a conexão com o banco de dados
 mysqli_close($conexao);
 ?>
@@ -90,16 +169,25 @@ mysqli_close($conexao);
 </div>
 
 <div class="monitoriacadastrada">
-    <fieldset>
+<fieldset>
         <legend id="legendTitulo">Monitorias Cadastradas</legend>
-        <?php if(!empty($monitorias)): ?>
-            <?php foreach($monitorias as $monitoria): ?>
+        <?php if (!empty($monitorias)): ?>
+            <?php foreach ($monitorias as $monitoria): ?>
                 <p>Disciplina: <?php echo $monitoria['disciplina_nome']; ?></p>
                 <p>Curso: <?php echo $monitoria['curso_nome']; ?></p>
                 <p>Professor: <?php echo $monitoria['nome_pessoa']; ?></p>
                 <p>Sala: <?php echo $monitoria['local']; ?></p>
                 <p>Turno: <?php echo $monitoria['turno']; ?></p>
                 <p>Dia: <?php echo $monitoria['dia']; ?></p>
+                <script src="js/botaocalendario.js"></script>
+                <div class="botaoAcessar" id="botao_<?php echo $monitoria['disciplina_nome']; ?>">
+                    <!-- Botão para acessar a aula, apenas no dia correto -->
+                </div>
+                
+                <script>
+                    exibirBotaoAcesso('<?php echo $monitoria['dia']; ?>', 'botao_<?php echo $monitoria['disciplina_nome']; ?>');
+                </script>
+                
                 <hr> <!-- Linha horizontal para separar as monitorias -->
             <?php endforeach; ?>
         <?php else: ?>

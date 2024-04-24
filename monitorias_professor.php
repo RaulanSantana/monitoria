@@ -39,8 +39,7 @@ FROM
 JOIN disciplina ON monitoria.monitoria_disciplina = disciplina.id_disciplina
 JOIN curso ON disciplina.disciplina_curso = curso.id_curso
 WHERE 
-    disciplina.disciplina_professor = '$id_professor';
-";
+    disciplina.disciplina_professor = '$id_professor'";
 
 $stmt = mysqli_prepare($conexao, $query);
 mysqli_stmt_execute($stmt);
@@ -54,6 +53,96 @@ if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         // Adiciona as monitorias ao array
         $monitorias[] = $row;
+    }
+}
+
+
+
+$queryy = "SELECT 
+monitoria.id_monitoria,
+monitoria.monitoria_monitor,
+monitoria.turno,
+monitoria.local,
+monitoria.monitoria_dia,
+monitoria.data_inicio,
+monitoria.data_fim,
+disciplina.disciplina_nome,
+disciplina.disciplina_fase,
+curso.curso_nome,
+CASE monitoria.monitoria_dia
+    WHEN 1 THEN 'Segunda-feira'
+    WHEN 2 THEN 'Terça-feira'
+    WHEN 3 THEN 'Quarta-feira'
+    WHEN 4 THEN 'Quinta-feira'
+    WHEN 5 THEN 'Sexta-feira'
+    WHEN 6 THEN 'Sábado'
+    WHEN 7 THEN 'Domingo'
+END AS nome_dia
+FROM 
+monitoria
+JOIN disciplina ON monitoria.monitoria_disciplina = disciplina.id_disciplina
+JOIN curso ON disciplina.disciplina_curso = curso.id_curso
+WHERE 
+disciplina.disciplina_professor = '$id_professor' and monitoria.monitoria_monitor is null";
+
+$stmte = mysqli_prepare($conexao, $queryy);
+mysqli_stmt_execute($stmte);
+$resulte = mysqli_stmt_get_result($stmte);
+
+// Armazenar as monitorias associadas ao professor
+$monitorias3 = array();
+
+// Verifique se há monitorias disponíveis para o professor
+if ($resulte) {
+    while ($roww = mysqli_fetch_assoc($resulte)) {
+        // Adiciona as monitorias ao array
+        $monitorias3[] = $roww;
+    }
+}
+
+$queryyy = "SELECT 
+monitoria.id_monitoria,
+monitoria.monitoria_monitor,
+
+nome_monitor.nome_pessoa as nome_monitor,
+monitoria.turno,
+monitoria.local,
+monitoria.monitoria_dia,
+monitoria.data_inicio,
+monitoria.data_fim,
+disciplina.disciplina_nome,
+disciplina.disciplina_fase,
+curso.curso_nome,
+CASE monitoria.monitoria_dia
+    WHEN 1 THEN 'Segunda-feira'
+    WHEN 2 THEN 'Terça-feira'
+    WHEN 3 THEN 'Quarta-feira'
+    WHEN 4 THEN 'Quinta-feira'
+    WHEN 5 THEN 'Sexta-feira'
+    WHEN 6 THEN 'Sábado'
+    WHEN 7 THEN 'Domingo'
+END AS nome_dia
+FROM 
+monitoria
+JOIN disciplina ON monitoria.monitoria_disciplina = disciplina.id_disciplina
+JOIN curso ON disciplina.disciplina_curso = curso.id_curso
+join monitor on monitoria.monitoria_monitor = monitor.id_monitor
+join pessoa as nome_monitor on monitor.monitor_pessoa = nome_monitor.id_pessoa
+WHERE 
+disciplina.disciplina_professor = '$id_professor' and monitoria.monitoria_monitor is not null";
+
+$stmtee = mysqli_prepare($conexao, $queryyy);
+mysqli_stmt_execute($stmtee);
+$resultee = mysqli_stmt_get_result($stmtee);
+
+// Armazenar as monitorias associadas ao professor
+$monitorias33 = array();
+
+// Verifique se há monitorias disponíveis para o professor
+if ($resultee) {
+    while ($rowww = mysqli_fetch_assoc($resultee)) {
+        // Adiciona as monitorias ao array
+        $monitorias33[] = $rowww;
     }
 }
 
@@ -150,7 +239,12 @@ mysqli_close($conexao);
         
         <script type="text/javascript" src="js/seletor.js"></script>
       
-      
+        <div class="faseM">
+        <label for="fase">Fase:</label><br>
+        <select name="fase" id="fase">
+            <option value="">Selecione um curso primeiro</option>  <!-- Texto padrão quando não há opções -->
+        </select>
+        </div>
 
         <div class="disciplinaM">
         <label for="disciplina">Disciplina:</label><br>
@@ -159,12 +253,7 @@ mysqli_close($conexao);
         </select>
         </div>
 
-        <div class="faseM">
-        <label for="fase">Fase:</label><br>
-        <select name="fase" id="fase">
-            <option value="">Selecione um curso primeiro</option>  <!-- Texto padrão quando não há opções -->
-        </select>
-        </div>
+    
 
 
         <div class="salaM">
@@ -204,14 +293,18 @@ mysqli_close($conexao);
             <option value="7">Domingo</option>
         </select>
         </div>
+
+
+
+        <div class="botaoCM">
+    <button onclick="fecharModal()">Cancelar</button>
+   </div>
+    
         <div class="botaoM">
         <input type="submit" name="submit"value="OK">
         </div>
 
-   <div class="botaoCM">
-    <button onclick="fecharModal()">Cancelar</button>
-   </div>
-    
+   
 
             </form>
             </div>    
@@ -238,7 +331,7 @@ mysqli_close($conexao);
 <script type="text/javascript" src="js/modaldel.js"></script>
 
 <fieldset>
-    <legend>Monitorias do Professor</legend>
+    <legend >Monitorias criadas pelo Professor</legend>
     <?php if (!empty($monitorias)): ?>
         <table class="table">
             <thead>
@@ -251,6 +344,7 @@ mysqli_close($conexao);
                     <th>Data de Início</th>
                     <th>Data de Fim</th>
                     <th>Dia da Aula</th>
+                
                 </tr>
             </thead>
             <tbody>
@@ -272,7 +366,87 @@ mysqli_close($conexao);
         <p>Não há monitorias criadas por este professor.</p>
     <?php endif; ?>
 </fieldset>
-</div>
+<br><br>
+<fieldset>
+   
+    <legend>Monitorias sem monitor</legend>
+   
+    <?php if (!empty($monitorias)): ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Curso</th>
+                    <th>Fase</th>
+                    <th>Sala</th>
+                    <th>Turno</th>
+                    <th>Data de Início</th>
+                    <th>Data de Fim</th>
+                    <th>Dia da Aula</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($monitorias3 as $monitoriaa): ?>
+                    <tr>
+                        
+                        <td><?php echo $monitoriaa['disciplina_nome']; ?></td>
+                        <td><?php echo $monitoriaa['curso_nome']; ?></td>
+                        <td><?php echo $monitoriaa['disciplina_fase']; ?></td>
+                        <td><?php echo $monitoriaa['local']; ?></td>
+                        <td><?php echo $monitoriaa['turno']; ?></td>
+                        <td><?php echo $monitoriaa['data_inicio']; ?></td>
+                        <td><?php echo $monitoriaa['data_fim']; ?></td>
+                        <td><?php echo $monitoriaa['nome_dia']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>Todas as monitorias cadastradas tem monitor.</p>
+    <?php endif; ?>
+</fieldset>
+<br><br>
+<fieldset>
+   
+    <legend>Monitorias com monitor</legend>
+   
+    <?php if (!empty($monitorias)): ?>
+        <table class="table">
+            <thead>
+                <tr>
+                <th>Monitor</th>
+                    <th>Disciplina</th>
+                    <th>Curso</th>
+                    <th>Fase</th>
+                    <th>Sala</th>
+                    <th>Turno</th>
+                    <th>Data de Início</th>
+                    <th>Data de Fim</th>
+                    <th>Dia da Aula</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($monitorias33 as $monitoriaaa): ?>
+                    <tr>
+                    <td><?php echo $monitoriaaa['nome_monitor']; ?></td>
+                        <td><?php echo $monitoriaaa['disciplina_nome']; ?></td>
+                        <td><?php echo $monitoriaaa['curso_nome']; ?></td>
+                        <td><?php echo $monitoriaaa['disciplina_fase']; ?></td>
+                        <td><?php echo $monitoriaaa['local']; ?></td>
+                        <td><?php echo $monitoriaaa['turno']; ?></td>
+                        <td><?php echo $monitoriaaa['data_inicio']; ?></td>
+                        <td><?php echo $monitoriaaa['data_fim']; ?></td>
+                        <td><?php echo $monitoriaaa['nome_dia']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>Nenhum monitor foi inscrito.</p>
+    <?php endif; ?>
+</fieldset>
 
 
 <script type="text/javascript" src="js/menulateral.js"></script>
